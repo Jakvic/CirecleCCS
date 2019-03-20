@@ -4,7 +4,12 @@ namespace CirecleCCS
 {
     class CcsGo
     {
+        /// <summary>
+        /// 圆的直径
+        /// </summary>
         public int ResizePinSize = 6;
+
+        //半径
         int HalfRPR
         {
             get { return ResizePinSize / 2; }
@@ -13,20 +18,22 @@ namespace CirecleCCS
         private float[] SelectRectDashPattern;
         private static Rectangle SelectRect;
         private static Rectangle ResizePin1, ResizePin2, ResizePin3, ResizePin4, ResizePin5, ResizePin6, ResizePin7, ResizePin8;
-        private static Rectangle rect;
+        private static Rectangle rect;  
         private static int ActivationPinPosition;
+        //selectrect的x,y,x1,y1
         private static int SelectX0, SelectY0, SelectX1, SelectY1;
 
-        private static int hitNothing = -1;
-        private static int hitTopLeft = 0;
-        private static int hitTopRight = 1;
-        private static int hitBottomRight = 2;
-        private static int hitBottomLeft = 3;
-        private static int hitTop = 4;
-        private static int hitRight = 5;
-        private static int hitBottom = 6;
-        private static int hitLeft = 7;
-        private static int hitMiddle = 8;
+        //8个角+点空白处+点中间
+        private const int hitNothing = -1;
+        private const int hitTopLeft = 0;
+        private const int hitTopRight = 1;
+        private const int hitBottomRight = 2;
+        private const int hitBottomLeft = 3;
+        private const int hitTop = 4;
+        private const int hitRight = 5;
+        private const int hitBottom = 6;
+        private const int hitLeft = 7;
+        private const int hitMiddle = 8;
 
         #region HideResizePin//隐藏ResizePin
         private void HideResizePin()
@@ -165,7 +172,6 @@ namespace CirecleCCS
         public void Create()
         {
             ResizePinPen = new Pen(Color.SteelBlue, 2);
-            //SelectRectPenSolidLine = new Pen(Color.SteelBlue);
             SelectRectDashPattern = new float[] {3,2,1};
 
             SelectRectPen = new Pen(Color.SteelBlue, 2.0f);
@@ -186,6 +192,7 @@ namespace CirecleCCS
         }
         #endregion
 
+        //待在box里面别出去
         void StayInBoxR(PictureBox R)
         {
             if (SelectRect.X < 0)
@@ -203,75 +210,66 @@ namespace CirecleCCS
         {
             SelectRectPen.Dispose();
             ResizePinPen.Dispose();
-            //SelectRectPenSolidLine.Dispose();
         }
         #endregion
 
         #region StartPoint//鼠标左键按下后
-        public void StartPoint(PictureBox frm, MouseEventArgs e)
+        public void StartPoint(PictureBox p, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                frm.Invalidate(null, true);
-                if (HitTest(e) == hitTopLeft)
+                p.Invalidate(null, true);
+                switch (HitTest(e))
                 {
-                    ActivationPinPosition = hitTopLeft;
-                    SelectX1 = SelectRect.X + SelectRect.Width;
-                    SelectY1 = SelectRect.Y + SelectRect.Height;
-                }
-                else if (HitTest(e) == hitTop)
-                {
-                    ActivationPinPosition = hitTop;
-                    SelectX1 = SelectRect.Width + SelectRect.X;
-                    SelectY1 = SelectRect.Height + SelectY0;
-                }
-                else if (HitTest(e) == hitTopRight)
-                {
-                    ActivationPinPosition = hitTopRight;
-                    SelectY1 = SelectRect.Y + SelectRect.Height;
-                }
-                else if (HitTest(e) == hitRight)
-                {
-                    ActivationPinPosition = hitRight;
-                    SelectY1 = SelectRect.Y + SelectRect.Height;
-                }
-                else if (HitTest(e) == hitBottomRight)
-                {
-                    ActivationPinPosition = hitBottomRight;
-                }
-                else if (HitTest(e) == hitBottom)
-                {
-                    ActivationPinPosition = hitBottom;
-                    SelectX1 = SelectRect.X + SelectRect.Width;
-                }
-                else if (HitTest(e) == hitBottomLeft)
-                {
-                    ActivationPinPosition = hitBottomLeft;
-                    SelectX1 = SelectRect.X + SelectRect.Width;
-                }
-                else if (HitTest(e) == hitLeft)
-                {
-                    ActivationPinPosition = hitLeft;
-                    SelectX1 = SelectRect.X + SelectRect.Width;
-                    SelectY1 = SelectRect.Y + SelectRect.Height;
-
-                }
-                else if (HitTest(e) == hitMiddle)
-                {
-                    ActivationPinPosition = hitMiddle;
-                    SelectX0 = e.X - SelectRect.X;
-                    SelectY0 = e.Y - SelectRect.Y;
-                    SelectX1 = SelectRect.X + SelectRect.Width - e.X;
-                    SelectY1 = SelectRect.Y + SelectRect.Height - e.Y;
-                }
-                else if (HitTest(e) == hitNothing)
-                {
-                    ActivationPinPosition = hitNothing;
-                    SelectRect.Width = 0;
-                    SelectRect.Height = 0;
-                    SelectX0 = e.X;
-                    SelectY0 = e.Y;
-                    HideResizePin();
+                    case hitTopLeft:
+                        ActivationPinPosition = hitTopLeft;
+                        SelectX1 = SelectRect.X + SelectRect.Width;
+                        SelectY1 = SelectRect.Y + SelectRect.Height;
+                        break;
+                    case hitTop:
+                        ActivationPinPosition = hitTop;
+                        SelectX1 = SelectRect.Width + SelectRect.X;
+                        SelectY1 = SelectRect.Height + SelectY0;
+                        break;
+                    case hitTopRight:
+                        ActivationPinPosition = hitTopRight;
+                        SelectY1 = SelectRect.Y + SelectRect.Height;
+                        break;
+                    case hitRight:
+                        ActivationPinPosition = hitRight;
+                        SelectY1 = SelectRect.Y + SelectRect.Height;
+                        break;
+                    case hitBottomRight:
+                        ActivationPinPosition = hitBottomRight;
+                        break;
+                    case hitBottom:
+                        ActivationPinPosition = hitBottom;
+                        SelectX1 = SelectRect.X + SelectRect.Width;
+                        break;
+                    case hitBottomLeft:
+                        ActivationPinPosition = hitBottomLeft;
+                        SelectX1 = SelectRect.X + SelectRect.Width;
+                        break;
+                    case hitLeft:
+                        ActivationPinPosition = hitLeft;
+                        SelectX1 = SelectRect.X + SelectRect.Width;
+                        SelectY1 = SelectRect.Y + SelectRect.Height;
+                        break;
+                    case hitMiddle:
+                        ActivationPinPosition = hitMiddle;
+                        SelectX0 = e.X - SelectRect.X;
+                        SelectY0 = e.Y - SelectRect.Y;
+                        SelectX1 = SelectRect.X + SelectRect.Width - e.X;
+                        SelectY1 = SelectRect.Y + SelectRect.Height - e.Y;
+                        break;
+                    case hitNothing:
+                        ActivationPinPosition = hitNothing;
+                        SelectRect.Width = 0;
+                        SelectRect.Height = 0;
+                        SelectX0 = e.X;
+                        SelectY0 = e.Y;
+                        HideResizePin();
+                        break;
                 }
             }
         }
@@ -280,49 +278,39 @@ namespace CirecleCCS
         #region TrackRubberBand //鼠标左键拖动时动态显示矩形框
         public void TrackRubberBand(PictureBox p, MouseEventArgs e, bool Iskeep = false)
         {
-            if (HitTest(e) == hitTopLeft)
+            switch (HitTest(e))
             {
-                p.Cursor = Cursors.SizeNWSE;
+                case hitTopLeft:
+                    p.Cursor = Cursors.SizeNWSE;
+                    break;
+                case hitTop:
+                    p.Cursor = Cursors.SizeNS;
+                    break;
+                case hitTopRight:
+                    p.Cursor = Cursors.SizeNESW;
+                    break;
+                case hitRight:
+                    p.Cursor = Cursors.SizeWE;
+                    break;
+                case hitBottomRight:
+                    p.Cursor = Cursors.SizeNWSE;
+                    break;
+                case hitBottom:
+                    p.Cursor = Cursors.SizeNS;
+                    break;
+                case hitBottomLeft:
+                    p.Cursor = Cursors.SizeNESW;
+                    break;
+                case hitLeft:
+                    p.Cursor = Cursors.SizeWE;
+                    break;
+                case hitMiddle:
+                    p.Cursor = Cursors.SizeAll;
+                    break;
+                case hitNothing:
+                    p.Cursor = Cursors.Default;
+                    break;
             }
-            else if (HitTest(e) == hitTop)
-            {
-                p.Cursor = Cursors.SizeNS;
-            }
-            else if (HitTest(e) == hitTopRight)
-            {
-                p.Cursor = Cursors.SizeNESW;
-            }
-            else if (HitTest(e) == hitRight)
-            {
-                p.Cursor = Cursors.SizeWE;
-            }
-            else if (HitTest(e) == hitBottomRight)
-            {
-                p.Cursor = Cursors.SizeNWSE;
-            }
-            else if (HitTest(e) == hitBottom)
-            {
-                p.Cursor = Cursors.SizeNS;
-            }
-            else if (HitTest(e) == hitBottomLeft)
-            {
-                p.Cursor = Cursors.SizeNESW;
-            }
-            else if (HitTest(e) == hitLeft)
-            {
-                p.Cursor = Cursors.SizeWE;
-            }
-            else if (HitTest(e) == hitMiddle)
-            {
-                p.Cursor = Cursors.SizeAll;
-            }
-            else if (HitTest(e) == hitNothing)
-            {
-                p.Cursor = Cursors.Default;
-                if (e.Button != MouseButtons.Left)
-                    ActivationPinPosition = hitNothing;
-            }
-
             if (e.Button == MouseButtons.Left)
             {
                 int TLX = e.X;
@@ -337,78 +325,65 @@ namespace CirecleCCS
                     TLY = 0;
                 else if (e.Y > p.Height)
                     TLY = p.Height;
-                //HideResizePin();
                 if (!Iskeep)
                 {
                     p.Invalidate(InvalidateRectangle(), false);
                 }
 
-                if (ActivationPinPosition == hitTopLeft)
+                switch (ActivationPinPosition)
                 {
-                    //3530183
-                    //3555202
-                    //13886277258 yang
-                    GenerateRectangle(ref SelectRect,TLX, TLY, SelectX1, SelectY1);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitTop)
-                {
-                    GenerateRectangle(ref SelectRect, SelectX0, TLY, SelectX1, SelectY1);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitTopRight)
-                {
-                    GenerateRectangle(ref SelectRect, SelectX0, TLY, TLX, SelectY1);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitRight)
-                {
-                    GenerateRectangle(ref SelectRect, SelectX0, SelectY0, TLX, SelectY1);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitBottomRight)
-                {
-                    GenerateRectangle(ref SelectRect, SelectX0, SelectY0, TLX, TLY);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitBottom)
-                {
-                    GenerateRectangle(ref SelectRect, SelectX0, SelectY0, SelectX1, TLY);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitBottomLeft)
-                {
-                    GenerateRectangle(ref SelectRect, TLX , SelectY0, SelectX1, TLY);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitLeft)
-                {
-                    GenerateRectangle(ref SelectRect, TLX , SelectY0, SelectX1, SelectY1);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitMiddle)
-                {
-                    GenerateRectangle(ref SelectRect, e.X - SelectX0, e.Y - SelectY0, e.X + SelectX1, e.Y + SelectY1);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                }
-                else if (ActivationPinPosition == hitNothing)
-                {
-                    GenerateRectangle(ref SelectRect, SelectX0, SelectY0, e.X, e.Y);
-                    StayInBoxR(p);
-                    SetResizePinVal();
-                    //HideResizePin();
+                    case hitTopLeft:
+                        GenerateRectangle(ref SelectRect, TLX, TLY, SelectX1, SelectY1);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitTop:
+                        GenerateRectangle(ref SelectRect, SelectX0, TLY, SelectX1, SelectY1);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitTopRight:
+                        GenerateRectangle(ref SelectRect, SelectX0, TLY, TLX, SelectY1);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitRight:
+                        GenerateRectangle(ref SelectRect, SelectX0, SelectY0, TLX, SelectY1);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitBottomRight:
+                        GenerateRectangle(ref SelectRect, SelectX0, SelectY0, TLX, TLY);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitBottom:
+                        GenerateRectangle(ref SelectRect, SelectX0, SelectY0, SelectX1, TLY);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitBottomLeft:
+                        GenerateRectangle(ref SelectRect, TLX, SelectY0, SelectX1, TLY);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitLeft:
+                        GenerateRectangle(ref SelectRect, TLX, SelectY0, SelectX1, SelectY1);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitMiddle:
+                        GenerateRectangle(ref SelectRect, e.X - SelectX0, e.Y - SelectY0, e.X + SelectX1, e.Y + SelectY1);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
+                    case hitNothing:
+                        GenerateRectangle(ref SelectRect, SelectX0, SelectY0, TLX, TLY);
+                        StayInBoxR(p);
+                        SetResizePinVal();
+                        break;
                 }
             }
-
         }
         #endregion
 
@@ -422,7 +397,6 @@ namespace CirecleCCS
                 SelectY0 = SelectRect.Y;
                 if(HitTest(e) != hitNothing && X > ResizePinSize && Y > ResizePinSize)
                     ShowResizePin();
-                //FeelFree(frm);
             }
         }
         #endregion
@@ -508,11 +482,19 @@ namespace CirecleCCS
         }
         #endregion
 
+        /// <summary>
+        /// set ccs框的位置以及尺寸
+        /// </summary>
+        /// <param name="ex">x坐标</param>
+        /// <param name="ey">y坐标</param>
+        /// <param name="ew">宽</param>
+        /// <param name="eh">高</param>
         public void SetRect(int ex, int ey, int ew, int eh)
         {
             GenerateRectangle(ref SelectRect, ex, ey, ex + ew, ey + eh);
         }
 
+        //隐藏起来
         public void HideCCS()
         {
             HideResizePin();

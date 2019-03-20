@@ -77,6 +77,7 @@
             // 
             // label_xval
             // 
+            this.label_xval.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_xval.AutoSize = true;
             this.label_xval.Font = new System.Drawing.Font("Courier New", 9F);
             this.label_xval.Location = new System.Drawing.Point(768, 222);
@@ -87,6 +88,7 @@
             // 
             // label_yval
             // 
+            this.label_yval.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_yval.AutoSize = true;
             this.label_yval.Font = new System.Drawing.Font("Courier New", 9F);
             this.label_yval.Location = new System.Drawing.Point(768, 248);
@@ -97,6 +99,7 @@
             // 
             // labelccsX
             // 
+            this.labelccsX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelccsX.AutoSize = true;
             this.labelccsX.Font = new System.Drawing.Font("Courier New", 9F);
             this.labelccsX.Location = new System.Drawing.Point(768, 273);
@@ -107,6 +110,7 @@
             // 
             // label_CcsY
             // 
+            this.label_CcsY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_CcsY.AutoSize = true;
             this.label_CcsY.Font = new System.Drawing.Font("Courier New", 9F);
             this.label_CcsY.Location = new System.Drawing.Point(768, 299);
